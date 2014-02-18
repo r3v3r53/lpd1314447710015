@@ -1,0 +1,33 @@
+#!/usr/bin/python
+
+class Scn:
+    def __init__(self):
+        pass
+
+    def ipscan(self, start, end):        
+        pass
+
+    def portscan(self, ip, start, end):
+        pass
+
+    def conscan(self, ip, start, end):
+        pass
+
+    def logscan(self, log):
+        pass
+
+class Ip:
+    def __init__(self, address):
+        self.address = address
+
+class Cnt:
+    def __init__(self, local_port):
+        self.local_port = local_port
+        self.ips = {}
+        pass
+    
+    def addIP(self, ip, port):
+        pass
+
+if __name__ == "__main__":
+    print len(argv)
