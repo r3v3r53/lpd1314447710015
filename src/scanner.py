@@ -29,7 +29,6 @@ class IPScan:
         pdf = PdfPages(self.filename)
         fig = plt.figure()
         fig.patch.set_alpha(0.5)
-        pdf.annotate(123,456,'my text here',fontsize=12,font='Helvetica') 
         pdf.close()
 
 
