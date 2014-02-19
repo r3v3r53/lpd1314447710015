@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# testar tambem https://github.com/node/turn-client/blob/master/py-udp-ping.py
 
 import sys, getopt, argparse
 import socket, time, random, struct
