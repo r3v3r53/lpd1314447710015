@@ -1,22 +1,39 @@
 #!/usr/bin/python
-# testar tambem https://github.com/node/turn-client/blob/master/py-udp-ping.py
 
 import sys, getopt, argparse
 import socket, time, random, struct
 import select
+from matplotlib.backends.backend_pdf import PdfPages
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib import figure
 
 class IPScan:
 
     def __init__(self, output, filename, start_ip, end_ip):
         self.output = output
-        self.filename = filename
+        self.filename = ("report." + str(output), filename)[filename != None]
         self.start_ip = start_ip
         self.end_ip = end_ip
+        self.active = []
         self.scan()
+        self.genReport()
         pass
 
+    def genReport(self):
+        if self.output == None:
+            return
+        for ip in self.active:
+            print ip
+            
+        pdf = PdfPages(self.filename)
+        fig = plt.figure()
+        fig.patch.set_alpha(0.5)
+        pdf.annotate(123,456,'my text here',fontsize=12,font='Helvetica') 
+        pdf.close()
+
+
     def scan(self):
-        active = []
         ICMP_ECHO_REQUEST = 8  
         ICMP_CODE = socket.getprotobyname('icmp')
         timeout = 0.05
@@ -44,10 +61,7 @@ class IPScan:
                                       timeout)
             my_socket.close()
             if delay != None:
-                active.append(IP(ip))
-        for ip in active:
-            print ip
-        pass
+                self.active.append(IP(ip))
             
     def create_packet(self, id, icmp):
         header = struct.pack('bbHHh', icmp, 0, 0, id, 1)
