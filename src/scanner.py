@@ -8,6 +8,33 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import figure
 
+class PortScan:
+
+    def __init__(self, output, filename, ip, start_port, end_port):
+        self.output = output
+        self.filename = ("report." + str(output), filename)[filename != None]
+        self.ip = ip
+        self.start_port = min(max(0, int(start_port)), 1024)
+        self.end_port = min(1024, max(0, int(end_port)))
+        self.scan()
+        pass
+
+    def scan(self):
+        print self.start_port, "-", self.end_port
+        for port in range(self.start_port, self.end_port):
+            try:
+                sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                try:
+                    result = sock.connect_ex((self.ip, port))
+                    socket.setdefaulttimeout(5)
+                    print "Port {}: \t Open".format(port)
+            
+                except socket.error as f:
+                    pass
+                sock.close()
+            except Exception as e:
+                print e
+        
 class IPScan:
 
     def __init__(self, output, filename, start_ip, end_ip):
@@ -21,10 +48,11 @@ class IPScan:
         pass
 
     def genReport(self):
-        if self.output == None:
-            return
         for ip in self.active:
             print ip
+        
+        if self.output == None:
+            return
             
         pdf = PdfPages(self.filename)
         fig = plt.figure()
@@ -43,6 +71,7 @@ class IPScan:
                                           socket.SOCK_RAW,
                                           ICMP_CODE)
             except socket.error as e:
+                print e
                 continue
             try:
                 host = socket.gethostbyname(ip)
@@ -161,6 +190,9 @@ def main(argv):
     parser.add_argument("-e", "--end",
                         required=False,
                         help="Port or IP to end")
+    parser.add_argument("-ip",
+                        required=False,
+                        help="IP to Port Scan")
     parser.add_argument("-g", "--group",
                         required=False,
                         help="How info is to be grouped in the report")
@@ -172,7 +204,11 @@ def main(argv):
                         help="Output file format")
     args = parser.parse_args()
     if args.action == 'ipscan':
+        print "Starting scan for IPs"
         scanner = IPScan(args.output, args.filename, args.start, args.end)
-
+    elif args.action == 'portscan':
+        print "Starting Portscan:", args.start, "-", args.end
+        
+        scanner = PortScan(args.output, args.filename, args.ip, args.start, args.end)
 if __name__ == "__main__":
    main(sys.argv[1:])
