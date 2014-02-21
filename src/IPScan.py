@@ -50,6 +50,7 @@ class IPScan(Scan):
                 continue
             try:
                 host = socket.gethostbyname(ip)
+                name = socket.getfqdn(ip)
             except socket.gaierror:
                 continue
             # Maximum for an unsigned short int c object counts to 65535 so
@@ -64,8 +65,8 @@ class IPScan(Scan):
                                       timeout)
             my_socket.close()
             if delay != None:
-                self.active.append(IP(ip))
-    
+                self.active.append(IP(ip, name))
+                 
     def getReport(self):
         for ip in self.active:
             print ip

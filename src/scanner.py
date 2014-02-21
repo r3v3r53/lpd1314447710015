@@ -36,10 +36,7 @@ def main(argv):
         scanner = IPScan(args.output, args.filename, args.start, args.end)
     elif args.action == 'portscan':
         print "Starting Portscan:", args.start, "-", args.end
+        scanner = PortScan(args.output, args.filename, args.ip, args.start, args.end)
        
-        scanner = IPScan(args.output, args.filename, args.ip, "0.0.0.0")
-        scanner.setPorts(args.start, args.end)
-        scanner.portScan()
-        scanner.genPReport()
 if __name__ == "__main__":
    main(sys.argv[1:])
