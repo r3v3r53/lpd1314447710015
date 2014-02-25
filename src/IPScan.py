@@ -15,7 +15,6 @@ class IPScan(Scan):
         self.setIPRange(start_ip, end_ip)
         self.active = []
         self.scan()
-        self.getReport()
 
     def setIPRange(self, start_ip, end_ip):
         start = list(map(int, start_ip.split(".")))
@@ -66,6 +65,7 @@ class IPScan(Scan):
             my_socket.close()
             if delay != None:
                 self.active.append(IP(ip, name))
+                print ip, name
                  
     def getReport(self):
         for ip in self.active:
