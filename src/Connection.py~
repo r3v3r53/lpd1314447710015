@@ -1,0 +1,9 @@
+from sqlalchemy import create_engine
+from hashlib import md5
+
+class Connection:
+    
+    def __init__(self, username, password):
+        db = ''.join(chr(ord(a) ^ ord(b)) for a,b in zip(username,password))
+        
+        engine = create_engine('sqlite:///%s.db' % (db))

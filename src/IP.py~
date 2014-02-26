@@ -1,0 +1,14 @@
+# baseado em http://docs.sqlalchemy.org/en/rel_0_9/orm/tutorial.html
+
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.ext.declarative import declarative_base
+
+Base = declarative_base()
+
+class IP(Base):
+    __tablename__ = 'ips'
+    id = Column(Integer, primary_key=True)
+    address = Column(String)
+
+    def __repr__(self):
+        return "<IP(id='%d', address='%s'" % (self.id, self.addr)

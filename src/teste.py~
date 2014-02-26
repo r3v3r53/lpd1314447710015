@@ -1,0 +1,11 @@
+from IP import IP
+from Connection import Connection
+
+con = Connection("pedro", "moreira")
+engine = con.engine
+session = con.session
+
+um = IP(address="192.168.1.1")
+dois = IP(address="0.0.0.0")
+session.add_all([um, dois)]
+session.commit
